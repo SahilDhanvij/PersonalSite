@@ -9,7 +9,7 @@ export interface Project {
 export interface Skill {
   name: string;
   icon: string;
-  category: 'Frontend' | 'Backend' | 'Tools' | 'Soft Skills';
+  category: 'Backend' | 'DevOps' | 'AI/ML Infra' | 'Frontend' | 'Tools';
 }
 
 export interface TimelineEntry {

@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { useTheme } from '../ThemeContext';
 
 interface NavbarProps {
   scrollY: number;
@@ -7,41 +7,92 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ scrollY }) => {
   const isScrolled = scrollY > 50;
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-slate-950/70 backdrop-blur-lg border-b border-white/10 py-3' : 'bg-transparent py-6'
-    }`}>
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        <a href="#hero" className="text-2xl font-serif font-bold tracking-tighter hover:text-cyan-400 transition-colors">
-          SUMMIT<span className="text-cyan-400">.</span>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      isScrolled ? 'py-3' : 'py-5'
+    }`} style={{
+      backgroundColor: isScrolled ? 'var(--nav-bg)' : 'transparent',
+      backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+      borderBottom: isScrolled ? '1px solid var(--border-light)' : '1px solid transparent',
+    }}>
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 flex justify-between items-center">
+        <a href="#hero" className="font-mono text-sm tracking-widest uppercase transition-colors hover:opacity-70" style={{ color: 'var(--accent)' }}>
+          Sahil Dhanvij
         </a>
-        
-        <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
-          {['Skills', 'Projects', 'Hobbies'].map((item) => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`}
-              className="text-slate-300 hover:text-white hover:underline decoration-cyan-400 decoration-2 underline-offset-8 transition-all"
+
+        <div className="hidden md:flex items-center gap-10">
+          {[
+            { label: 'Skills', href: '#skills' },
+            { label: 'Projects', href: '#projects' },
+            { label: 'Interests', href: '#interests' },
+          ].map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className="font-mono text-xs tracking-wider transition-colors duration-200"
+              style={{ color: 'var(--text-mid)' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent)')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-mid)')}
             >
-              {item}
+              {item.label}
             </a>
           ))}
-          <a 
-            href="mailto:hello@example.com" 
-            className="px-5 py-2 bg-white text-slate-950 rounded-full hover:bg-cyan-400 hover:scale-105 transition-all font-bold"
+
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"
+            style={{ backgroundColor: 'var(--accent-subtle)', color: 'var(--accent)' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-soft)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-subtle)'; }}
+            aria-label="Toggle theme"
           >
-            Get in Touch
+            {theme === 'light' ? (
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+              </svg>
+            )}
+          </button>
+
+          <a
+            href="mailto:sahildhanvij.cse@gmail.com"
+            className="font-mono text-xs tracking-wider px-4 py-2 rounded-full text-white transition-all duration-200"
+            style={{ backgroundColor: 'var(--accent)' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-hover)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent)'; }}
+          >
+            Say hello
           </a>
         </div>
-        
-        {/* Mobile menu icon (placeholder) */}
-        <div className="md:hidden">
-            <button className="text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-            </button>
+
+        <div className="md:hidden flex items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            className="w-8 h-8 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: 'var(--accent-subtle)', color: 'var(--accent)' }}
+            aria-label="Toggle theme"
+          >
+            {theme === 'light' ? (
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+              </svg>
+            )}
+          </button>
+          <button style={{ color: 'var(--text)' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16" />
+            </svg>
+          </button>
         </div>
       </div>
     </nav>

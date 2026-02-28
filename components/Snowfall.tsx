@@ -39,7 +39,7 @@ export const Snowfall: React.FC<SnowfallProps> = ({ mouseX = 0 }) => {
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+      ctx.fillStyle = "rgba(255, 255, 255, 0.18)";
       ctx.beginPath();
       for (let i = 0; i < mp; i++) {
         const p = particles[i];
@@ -94,7 +94,7 @@ export const Snowfall: React.FC<SnowfallProps> = ({ mouseX = 0 }) => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="fixed inset-0 z-[1] pointer-events-none opacity-40"
+      className="fixed inset-0 z-[1] pointer-events-none opacity-30"
     />
   );
 };

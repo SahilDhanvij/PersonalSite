@@ -2,99 +2,109 @@ import React from 'react';
 import { Skill, TimelineEntry } from '../types';
 
 const SKILLS: Skill[] = [
-  { name: 'React', icon: '⚛️', category: 'Frontend' },
+  // Current stack (what you actually work with)
   { name: 'TypeScript', icon: 'TS', category: 'Frontend' },
+  { name: 'Angular', icon: '🅰️', category: 'Frontend' },
+  { name: 'React', icon: '⚛️', category: 'Frontend' },
   { name: 'Next.js', icon: '▲', category: 'Frontend' },
   { name: 'Node.js', icon: '🟢', category: 'Backend' },
+  { name: 'NestJS', icon: '🐱', category: 'Backend' },
+  { name: 'JavaScript', icon: 'JS', category: 'Backend' },
   { name: 'PostgreSQL', icon: '🐘', category: 'Backend' },
-  { name: 'GraphQL', icon: '◈', category: 'Backend' },
+  { name: 'MongoDB', icon: '🍃', category: 'Backend' },
+  { name: 'MySQL', icon: '🐬', category: 'Backend' },
+  { name: 'Redis', icon: '🔴', category: 'Backend' },
+  { name: 'Kafka', icon: '📨', category: 'Backend' },
+  // Learning / transitioning into
+  { name: 'Go', icon: '🔷', category: 'Tools' },
   { name: 'Docker', icon: '🐋', category: 'Tools' },
-  { name: 'Three.js', icon: '🌐', category: 'Tools' },
+  { name: 'Kubernetes', icon: '☸️', category: 'Tools' },
+  { name: 'Python', icon: '🐍', category: 'Tools' },
+  { name: 'Terraform', icon: '🏗️', category: 'Tools' },
+  { name: 'PyTorch', icon: '🔥', category: 'Tools' },
 ];
 
 const TIMELINE: TimelineEntry[] = [
   {
-    year: '2023 - Present',
-    role: 'Senior Digital Architect',
-    company: 'Summit Labs',
-    description: 'Leading the development of high-performance data visualization tools for environmental researchers.'
+    year: '2025 — Present',
+    role: 'Transitioning to Backend & ML Infra',
+    company: 'Self-directed',
+    description: 'Deep-diving into distributed systems, container orchestration, ML pipelines, and infrastructure-as-code. Building projects to bridge the gap from full stack to platform engineering.'
   },
   {
-    year: '2021 - 2023',
-    role: 'Full Stack Engineer',
-    company: 'Peak Software',
-    description: 'Engineered scalable cloud solutions and optimized frontend performance by 40%.'
+    year: '2023 — 2025',
+    role: 'Full Stack Developer',
+    company: '~2 years of experience',
+    description: 'Built production applications with Angular, React, NestJS, and Next.js. Worked across the entire stack — REST APIs, database design, auth flows, and deployment pipelines.'
   },
-  {
-    year: '2019 - 2021',
-    role: 'Frontend Developer',
-    company: 'Ridge Dynamics',
-    description: 'Built immersive user interfaces using React and refined the company design system.'
-  }
+];
+
+const CATEGORIES = [
+  { key: 'Frontend' as const, label: 'Frontend' },
+  { key: 'Backend' as const, label: 'Backend & Data' },
+  { key: 'Tools' as const, label: 'Learning & Exploring' },
 ];
 
 export const Skills: React.FC = () => {
   return (
-    <div className="container mx-auto px-6 relative z-10">
-      <div className="flex flex-col items-center text-center mb-24">
-        <span className="text-cyan-400 font-bold tracking-widest uppercase text-sm mb-4">Preparation & Ascent</span>
-        <h2 className="text-4xl md:text-6xl font-serif font-bold">Capabilities & History</h2>
-        <div className="w-24 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent mt-8"></div>
+    <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 py-32 md:py-40 relative z-10">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-8 h-px" style={{ backgroundColor: 'var(--accent)' }} />
+        <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--accent)' }}>Background</span>
       </div>
+      <h2 className="font-serif text-4xl md:text-6xl mb-20" style={{ color: 'var(--text)' }}>
+        Stack & <span className="italic" style={{ color: 'var(--accent)' }}>trajectory</span>
+      </h2>
 
-      <div className="grid lg:grid-cols-2 gap-20 items-start">
-        {/* Simplified Skills Design */}
-        <div className="space-y-12">
-          <div className="flex items-center space-x-4 mb-8">
-            <div className="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white tracking-tight">Technical Gear</h3>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {SKILLS.map((skill) => (
-              <div 
-                key={skill.name}
-                className="group relative p-4 bg-white/5 border border-white/10 rounded-xl hover:border-cyan-500/50 transition-all duration-300 backdrop-blur-md flex flex-col items-center text-center"
-              >
-                <div className="mb-3 text-3xl group-hover:scale-110 transition-transform">{skill.icon}</div>
-                <h4 className="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">{skill.name}</h4>
-                <span className="text-[9px] text-slate-500 uppercase font-black tracking-tighter mt-1">{skill.category}</span>
+      <div className="grid lg:grid-cols-[1fr,1px,1fr] gap-12 lg:gap-0">
+        <div className="lg:pr-16">
+          <h3 className="font-mono text-xs tracking-widest uppercase mb-10" style={{ color: 'var(--text-light)' }}>Technical stack</h3>
+          <div className="space-y-8">
+            {CATEGORIES.map((cat) => (
+              <div key={cat.key}>
+                <span className="font-mono text-[10px] tracking-widest uppercase block mb-3" style={{ color: 'var(--accent2)' }}>{cat.label}</span>
+                <div className="flex flex-wrap gap-3">
+                  {SKILLS.filter(s => s.category === cat.key).map((skill) => (
+                    <div
+                      key={skill.name}
+                      className="group flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all duration-300"
+                      style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-card)' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.backgroundColor = 'var(--accent-faint)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.backgroundColor = 'var(--bg-card)'; }}
+                    >
+                      <span className="text-lg">{skill.icon}</span>
+                      <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>{skill.name}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Career Timeline */}
-        <div className="space-y-12">
-          <div className="flex items-center space-x-4 mb-8">
-            <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white tracking-tight">The Ascent</h3>
-          </div>
+        <div className="hidden lg:block" style={{ backgroundColor: 'var(--border-light)' }} />
 
-          <div className="relative border-l border-white/10 ml-4 space-y-12 pb-8">
+        <div className="lg:pl-16">
+          <h3 className="font-mono text-xs tracking-widest uppercase mb-10" style={{ color: 'var(--text-light)' }}>Career path</h3>
+          <div className="space-y-12">
             {TIMELINE.map((entry, idx) => (
-              <div key={idx} className="relative pl-10 group">
-                {/* Timeline Dot */}
-                <div className="absolute -left-[9px] top-1 w-4 h-4 bg-slate-950 border-2 border-cyan-500 rounded-full group-hover:scale-150 transition-transform duration-300 shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
-                
-                <div className="space-y-2">
-                  <span className="text-xs font-bold text-cyan-500 uppercase tracking-widest">{entry.year}</span>
-                  <h4 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">{entry.role}</h4>
-                  <div className="text-sm font-medium text-slate-400">{entry.company}</div>
-                  <p className="text-slate-500 text-sm leading-relaxed max-w-md">
-                    {entry.description}
-                  </p>
-                </div>
+              <div key={idx} className="group relative pl-8">
+                <div className="absolute left-0 top-2 w-2.5 h-2.5 rounded-full transition-transform duration-300 group-hover:scale-150" style={{ backgroundColor: 'var(--accent)' }} />
+                <div className="absolute left-[4px] top-5 w-px h-[calc(100%+20px)]" style={{ backgroundColor: 'var(--border-light)' }} />
+                <span className="font-mono text-xs block mb-2" style={{ color: 'var(--text-light)' }}>{entry.year}</span>
+                <h4 className="text-lg font-medium mb-1" style={{ color: 'var(--text)' }}>{entry.role}</h4>
+                <span className="text-sm italic block mb-2" style={{ color: 'var(--accent2)' }}>{entry.company}</span>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-mid)' }}>{entry.description}</p>
               </div>
             ))}
+          </div>
+
+          {/* Where I'm headed */}
+          <div className="mt-16 p-6 rounded-2xl border" style={{ borderColor: 'var(--accent-border)', backgroundColor: 'var(--accent-ghost)' }}>
+            <span className="font-mono text-[10px] tracking-widest uppercase block mb-3" style={{ color: 'var(--accent)' }}>Where I'm headed</span>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-mid)' }}>
+              Backend engineering, DevOps, and ML infrastructure. I want to build the systems that power AI — distributed training pipelines, model serving platforms, GPU orchestration, and production-grade infra that scales.
+            </p>
           </div>
         </div>
       </div>

@@ -1,49 +1,44 @@
 import React from 'react';
 
-interface HeroProps {
-  scrollY: number;
-  mousePos: { x: number; y: number };
-}
-
-export const Hero: React.FC<HeroProps> = ({ scrollY, mousePos }) => {
-  const contentOffset = scrollY * 0.3;
-  
-  // Parallax factors
-  const mtnX = (mousePos.x / window.innerWidth - 0.5) * 20;
-  const mtnY = (mousePos.y / window.innerHeight - 0.5) * 10;
-
+export const Hero: React.FC = () => {
   return (
-    <div className="relative h-screen w-full flex items-center justify-start pointer-events-none container mx-auto px-6 md:px-12 lg:px-24">
-      <div 
-        className="relative z-30 text-left transition-transform duration-75 pointer-events-auto max-w-4xl"
-        style={{ transform: `translate3d(${mtnX * -0.5}px, ${-contentOffset + (mtnY * -0.5)}px, 0)` }}
-      >
-        <div className="inline-block px-4 py-1 border border-cyan-500/30 rounded-full bg-cyan-500/10 backdrop-blur-md mb-6">
-            <span className="text-cyan-400 font-bold tracking-[0.3em] uppercase text-xs">
-                Basecamp: Digital Architect
-            </span>
+    <div className="relative min-h-screen flex flex-col justify-end pb-24 md:pb-32 px-6 md:px-12 lg:px-24 max-w-[1400px] mx-auto">
+      <div className="absolute top-32 left-6 md:left-12 lg:left-24">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-px" style={{ backgroundColor: 'var(--accent)' }} />
+          <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--accent)' }}>Full Stack &middot; Transitioning to Backend &amp; ML Infra</span>
         </div>
-        
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-white leading-[1.1] mb-8 drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
-          Elevated <br />
-          <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Solutions</span>
+      </div>
+
+      <div className="relative z-10 max-w-5xl">
+        <h1 className="font-serif text-[clamp(3rem,8vw,8rem)] leading-[0.95] tracking-tight mb-8" style={{ color: 'var(--text)' }}>
+          Learning to build the <br />
+          <span className="italic" style={{ color: 'var(--accent)' }}>infrastructure</span> <br />
+          behind intelligence
         </h1>
-        
-        <p className="max-w-xl text-lg md:text-xl text-slate-300 font-medium leading-relaxed drop-shadow-xl bg-[#020617]/40 backdrop-blur-sm rounded-xl p-6 border border-white/5">
-          Engineering scalable digital experiences with the precision of a mountaineer. <br />
-          High-performance code, honed in the rarefied air of complex problem solving.
-        </p>
-        
-        <div className="mt-12 flex flex-col sm:flex-row items-center justify-start gap-6">
-            <a href="#projects" className="group w-full sm:w-auto px-10 py-4 bg-cyan-500 text-slate-950 rounded-full text-center font-bold hover:bg-cyan-400 transition-all shadow-[0_0_40px_rgba(34,211,238,0.3)] flex items-center justify-center">
-                View Milestones
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
+
+        <div className="flex flex-col md:flex-row md:items-end gap-8 md:gap-16">
+          <p className="max-w-md text-base leading-relaxed" style={{ color: 'var(--text-mid)' }}>
+            Full stack developer with ~2 years of experience, now diving deep into backend engineering, DevOps, and ML infrastructure. Building the bridge from product to platform.
+          </p>
+          <div className="flex items-center gap-6">
+            <a href="#projects" className="group inline-flex items-center gap-3 px-6 py-3 rounded-full font-mono text-sm tracking-wide transition-all duration-300 hover:gap-5 text-white" style={{ backgroundColor: 'var(--accent)' }}>
+              Selected work
+              <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
             </a>
-            <a href="#skills" className="w-full sm:w-auto px-10 py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white rounded-full text-center font-bold hover:bg-white/10 transition-all">
-                Technical Gear
+            <a href="#skills" className="font-mono text-sm underline decoration-dotted underline-offset-4 transition-colors hover:decoration-solid" style={{ color: 'var(--accent2)' }}>
+              Stack &amp; experience
             </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="absolute bottom-8 right-6 md:right-12 lg:right-24 flex flex-col items-center gap-2">
+        <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: 'var(--text-light)' }}>Scroll</span>
+        <div className="w-px h-12 relative overflow-hidden">
+          <div className="absolute inset-x-0 h-full animate-pulse" style={{ background: 'linear-gradient(180deg, var(--accent), transparent)' }} />
         </div>
       </div>
     </div>
