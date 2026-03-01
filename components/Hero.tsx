@@ -11,14 +11,14 @@ export const Hero: React.FC = () => {
       </div>
 
       <div className="relative z-10 max-w-5xl">
-        <h1 className="font-serif text-[clamp(3rem,8vw,8rem)] leading-[0.95] tracking-tight mb-8" style={{ color: 'var(--text)' }}>
+        <h1 className="font-serif text-[clamp(2.5rem,5.5vw,5.5rem)] leading-[1] tracking-tight mb-10" style={{ color: 'var(--text)' }}>
           Learning to build the <br />
           <span className="italic" style={{ color: 'var(--accent)' }}>infrastructure</span> <br />
           behind intelligence
         </h1>
 
         <div className="flex flex-col md:flex-row md:items-end gap-8 md:gap-16">
-          <p className="max-w-md text-base leading-relaxed" style={{ color: 'var(--text-mid)' }}>
+          <p className="max-w-lg text-lg leading-relaxed" style={{ color: 'var(--text-mid)' }}>
             Full stack developer with ~2 years of experience, now diving deep into backend engineering, DevOps, and ML infrastructure. Building the bridge from product to platform.
           </p>
           <div className="flex items-center gap-6">

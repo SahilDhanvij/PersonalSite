@@ -65,7 +65,7 @@ const ProjectCard: React.FC<{ project: Project; idx: number }> = ({ project, idx
         <div className="relative z-10">
           <h3 className="font-serif text-xl mb-2 transition-colors duration-300"
             style={{ color: hover ? 'var(--accent)' : 'var(--text)' }}>{project.title}</h3>
-          <p className="text-xs leading-relaxed mb-4" style={{ color: 'var(--text-mid)' }}>{project.description}</p>
+          <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-mid)' }}>{project.description}</p>
           <div className="flex flex-wrap gap-1.5">
             {project.tags.map(tag => (
               <span key={tag} className="font-mono text-[9px] tracking-wider uppercase px-2 py-0.5 rounded-full"
@@ -231,7 +231,7 @@ export const AllProjectsPage: React.FC<{ onBack: () => void }> = ({ onBack }) =>
                       </svg>
                     </div>
                     <h3 className="font-serif text-lg mb-1.5" style={{ color: 'var(--text)' }}>{project.title}</h3>
-                    <p className="text-[11px] leading-relaxed mb-3" style={{ color: 'var(--text-mid)' }}>{project.description}</p>
+                    <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--text-mid)' }}>{project.description}</p>
                     <div className="flex flex-wrap gap-1">
                       {project.tags.map(tag => (
                         <span key={tag} className="font-mono text-[8px] tracking-wider uppercase px-1.5 py-0.5 rounded-full"
@@ -303,7 +303,7 @@ export const Projects: React.FC<{ onShowAll: () => void }> = ({ onShowAll }) => 
         <div className="w-8 h-px" style={{ backgroundColor: 'var(--accent)' }} />
         <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--accent)' }}>Selected work</span>
       </div>
-      <h2 className="font-serif text-4xl md:text-6xl mb-20" style={{ color: 'var(--text)' }}>
+      <h2 className="font-serif text-3xl md:text-5xl mb-20" style={{ color: 'var(--text)' }}>
         Things I've <span className="italic" style={{ color: 'var(--accent)' }}>built</span>
       </h2>
 

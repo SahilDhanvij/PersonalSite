@@ -15,7 +15,7 @@ export const Hobbies: React.FC = () => {
         <div className="w-8 h-px" style={{ backgroundColor: 'var(--accent)' }} />
         <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--accent)' }}>Off the clock</span>
       </div>
-      <h2 className="font-serif text-4xl md:text-6xl mb-20" style={{ color: 'var(--text)' }}>
+      <h2 className="font-serif text-3xl md:text-5xl mb-20" style={{ color: 'var(--text)' }}>
         When I'm not <span className="italic" style={{ color: 'var(--accent2)' }}>deploying</span>
       </h2>
 
@@ -38,7 +38,7 @@ export const Hobbies: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-lg font-medium mb-2 transition-colors duration-300" style={{ color: 'var(--text)' }}>{hobby.name}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-mid)' }}>{hobby.description}</p>
+                <p className="text-base leading-relaxed" style={{ color: 'var(--text-mid)' }}>{hobby.description}</p>
               </div>
             </div>
             <div className="absolute bottom-3 right-3 w-4 h-4 border-b border-r transition-opacity duration-300 opacity-0 group-hover:opacity-100" style={{ borderColor: 'var(--accent)' }} />

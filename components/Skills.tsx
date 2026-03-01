@@ -52,7 +52,7 @@ export const Skills: React.FC = () => {
         <div className="w-8 h-px" style={{ backgroundColor: 'var(--accent)' }} />
         <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--accent)' }}>Background</span>
       </div>
-      <h2 className="font-serif text-4xl md:text-6xl mb-20" style={{ color: 'var(--text)' }}>
+      <h2 className="font-serif text-3xl md:text-5xl mb-20" style={{ color: 'var(--text)' }}>
         Stack & <span className="italic" style={{ color: 'var(--accent)' }}>trajectory</span>
       </h2>
 
@@ -73,7 +73,7 @@ export const Skills: React.FC = () => {
                       onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.backgroundColor = 'var(--bg-card)'; }}
                     >
                       <span className="text-lg">{skill.icon}</span>
-                      <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>{skill.name}</span>
+                      <span className="text-base font-medium" style={{ color: 'var(--text)' }}>{skill.name}</span>
                     </div>
                   ))}
                 </div>
@@ -93,8 +93,8 @@ export const Skills: React.FC = () => {
                 <div className="absolute left-[4px] top-5 w-px h-[calc(100%+20px)]" style={{ backgroundColor: 'var(--border-light)' }} />
                 <span className="font-mono text-xs block mb-2" style={{ color: 'var(--text-light)' }}>{entry.year}</span>
                 <h4 className="text-lg font-medium mb-1" style={{ color: 'var(--text)' }}>{entry.role}</h4>
-                <span className="text-sm italic block mb-2" style={{ color: 'var(--accent2)' }}>{entry.company}</span>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-mid)' }}>{entry.description}</p>
+                <span className="text-base italic block mb-2" style={{ color: 'var(--accent2)' }}>{entry.company}</span>
+                <p className="text-base leading-relaxed" style={{ color: 'var(--text-mid)' }}>{entry.description}</p>
               </div>
             ))}
           </div>
@@ -102,7 +102,7 @@ export const Skills: React.FC = () => {
           {/* Where I'm headed */}
           <div className="mt-16 p-6 rounded-2xl border" style={{ borderColor: 'var(--accent-border)', backgroundColor: 'var(--accent-ghost)' }}>
             <span className="font-mono text-[10px] tracking-widest uppercase block mb-3" style={{ color: 'var(--accent)' }}>Where I'm headed</span>
-            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-mid)' }}>
+            <p className="text-base leading-relaxed" style={{ color: 'var(--text-mid)' }}>
               Backend engineering, DevOps, and ML infrastructure. I want to build the systems that power AI — distributed training pipelines, model serving platforms, GPU orchestration, and production-grade infra that scales.
             </p>
           </div>
