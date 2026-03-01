@@ -37,34 +37,38 @@ const PROJECTS: Project[] = [
   { title: "Cost Tracker", description: "Cloud spend analyzer with per-team attribution, budget alerts, and right-sizing recommendations.", tags: ["Python", "AWS", "React"], link: "#", image: "COST" },
 ];
 
-const CAROUSEL_COUNT = 8;
+const CAROUSEL_COUNT = 6;
 
-const ProjectCard: React.FC<{ project: Project; idx: number }> = ({ project, idx }) => {
+const ProjectCard = React.forwardRef<HTMLDivElement, { project: Project; idx: number; highlighted?: boolean }>(
+  ({ project, idx, highlighted }, ref) => {
   const [hover, setHover] = useState(false);
+  const isActive = hover || highlighted;
 
   return (
-    <div className="group relative" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <div ref={ref} className="group relative" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <div
         className="relative rounded-2xl overflow-hidden p-7 h-full transition-all duration-500"
         style={{
-          backgroundColor: hover ? 'var(--bg-card)' : 'var(--bg-surface)',
-          border: `1px solid ${hover ? 'var(--accent-border)' : 'var(--border-light)'}`,
-          transform: hover ? 'translateY(-6px)' : 'translateY(0)',
-          boxShadow: hover ? 'var(--card-shadow-hover)' : 'var(--card-shadow)',
+          backgroundColor: isActive ? 'var(--bg-card)' : 'var(--bg-surface)',
+          border: `1px solid ${isActive ? 'var(--accent-border)' : 'var(--border-light)'}`,
+          transform: isActive ? 'translateY(-6px)' : 'translateY(0)',
+          boxShadow: highlighted
+            ? '0 0 0 2px var(--accent), var(--card-shadow-hover)'
+            : hover ? 'var(--card-shadow-hover)' : 'var(--card-shadow)',
         }}
       >
         <div className="flex items-start justify-between mb-4 relative z-10">
           <span className="font-serif text-3xl italic select-none transition-colors duration-500"
-            style={{ color: hover ? 'var(--accent-medium)' : 'var(--accent-soft)' }}>{project.image}</span>
+            style={{ color: isActive ? 'var(--accent-medium)' : 'var(--accent-soft)' }}>{project.image}</span>
           <svg className="w-4 h-4 transition-all duration-300"
-            style={{ color: 'var(--accent)', opacity: hover ? 0.8 : 0.3, transform: hover ? 'translate(2px, -2px)' : 'none' }}
+            style={{ color: 'var(--accent)', opacity: isActive ? 0.8 : 0.3, transform: isActive ? 'translate(2px, -2px)' : 'none' }}
             fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 17L17 7M17 7H7M17 7v10" />
           </svg>
         </div>
         <div className="relative z-10">
           <h3 className="font-serif text-xl mb-2 transition-colors duration-300"
-            style={{ color: hover ? 'var(--accent)' : 'var(--text)' }}>{project.title}</h3>
+            style={{ color: isActive ? 'var(--accent)' : 'var(--text)' }}>{project.title}</h3>
           <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-mid)' }}>{project.description}</p>
           <div className="flex flex-wrap gap-1.5">
             {project.tags.map(tag => (
@@ -76,7 +80,7 @@ const ProjectCard: React.FC<{ project: Project; idx: number }> = ({ project, idx
       </div>
     </div>
   );
-};
+});
 
 /* ── Orbital Carousel + Grid hybrid page ── */
 
@@ -84,28 +88,35 @@ export const AllProjectsPage: React.FC<{ onBack: () => void }> = ({ onBack }) =>
   const { theme, toggleTheme } = useTheme();
   const [activeIdx, setActiveIdx] = useState(-1);
   const [isDragging, setIsDragging] = useState(false);
+  const [highlightedIdx, setHighlightedIdx] = useState(-1);
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const gridCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const rotationRef = useRef(0);
   const dragStartRef = useRef(0);
   const rotationStartRef = useRef(0);
   const lastTimeRef = useRef(0);
   const isDraggingRef = useRef(false);
+  const pausedRef = useRef(false);
+  const activeIdxRef = useRef(-1);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const featured = PROJECTS.slice(0, CAROUSEL_COUNT);
   const remaining = PROJECTS.slice(CAROUSEL_COUNT);
-  const radius = typeof window !== 'undefined' && window.innerWidth < 768 ? 180 : 350;
+  const radius = typeof window !== 'undefined' && window.innerWidth < 768 ? 200 : 400;
   const step = (Math.PI * 2) / featured.length;
 
   useEffect(() => {
     let animId: number;
     const animate = (time: number) => {
-      if (!isDraggingRef.current) {
+      if (!isDraggingRef.current && !pausedRef.current) {
         const delta = time - lastTimeRef.current;
-        rotationRef.current += delta * 0.00015;
+        rotationRef.current += delta * 0.00012;
       }
       lastTimeRef.current = time;
 
+      const hasActive = activeIdxRef.current !== -1;
       for (let i = 0; i < featured.length; i++) {
         const el = cardRefs.current[i];
         if (!el) continue;
@@ -113,11 +124,19 @@ export const AllProjectsPage: React.FC<{ onBack: () => void }> = ({ onBack }) =>
         const x = Math.sin(angle) * radius;
         const z = Math.cos(angle) * radius;
         const normZ = (z + radius) / (2 * radius);
-        const s = normZ * 0.4 + 0.6;
-        const o = normZ * 0.6 + 0.4;
-        el.style.transform = `translate3d(${x}px, 0px, ${z}px) rotateY(${-angle * 57.2958}deg) scale(${s})`;
+        let s = normZ * 0.35 + 0.65;
+        let o = normZ * 0.55 + 0.45;
+        if (hasActive) {
+          if (i === activeIdxRef.current) {
+            s *= 1.1;
+            o = 1;
+          } else {
+            o = 0.25;
+          }
+        }
+        el.style.transform = `translate3d(${x}px, 0px, ${z}px) scale(${s})`;
         el.style.opacity = String(o);
-        el.style.zIndex = String(Math.round(normZ * 100));
+        el.style.zIndex = String(i === activeIdxRef.current ? 200 : Math.round(normZ * 100));
       }
       animId = requestAnimationFrame(animate);
     };
@@ -128,6 +147,28 @@ export const AllProjectsPage: React.FC<{ onBack: () => void }> = ({ onBack }) =>
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
+
+  const handleCardClick = (idx: number) => {
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+
+    setActiveIdx(idx);
+    activeIdxRef.current = idx;
+    pausedRef.current = true;
+
+    const gridEl = gridCardRefs.current[idx];
+    if (gridEl) {
+      setHighlightedIdx(idx);
+      gridEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      highlightTimerRef.current = setTimeout(() => setHighlightedIdx(-1), 3000);
+    }
+
+    resumeTimerRef.current = setTimeout(() => {
+      setActiveIdx(-1);
+      activeIdxRef.current = -1;
+      pausedRef.current = false;
+    }, 5000);
+  };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true); isDraggingRef.current = true;
@@ -195,7 +236,7 @@ export const AllProjectsPage: React.FC<{ onBack: () => void }> = ({ onBack }) =>
           <div
             ref={carouselRef}
             className="w-full h-full flex items-center justify-center select-none"
-            style={{ perspective: '1000px', cursor: isDragging ? 'grabbing' : 'grab' }}
+            style={{ perspective: '1400px', cursor: isDragging ? 'grabbing' : 'grab' }}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -209,12 +250,12 @@ export const AllProjectsPage: React.FC<{ onBack: () => void }> = ({ onBack }) =>
                   style={{
                     position: 'absolute',
                     top: '-150px',
-                    left: '-140px',
-                    width: '280px',
+                    left: '-130px',
+                    width: '260px',
                     willChange: 'transform',
                     backfaceVisibility: 'hidden',
                   }}
-                  onClick={() => setActiveIdx(activeIdx === idx ? -1 : idx)}
+                  onClick={() => handleCardClick(idx)}
                 >
                   <div
                     className="rounded-2xl overflow-hidden p-5 transition-all duration-300"
@@ -273,7 +314,13 @@ export const AllProjectsPage: React.FC<{ onBack: () => void }> = ({ onBack }) =>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {PROJECTS.map((project, idx) => (
-            <ProjectCard key={idx} project={project} idx={idx} />
+            <ProjectCard
+              key={idx}
+              ref={(el) => { gridCardRefs.current[idx] = el; }}
+              project={project}
+              idx={idx}
+              highlighted={highlightedIdx === idx}
+            />
           ))}
         </div>
       </div>
