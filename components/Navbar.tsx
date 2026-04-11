@@ -1,5 +1,4 @@
-import React from 'react';
-import { useTheme } from '../ThemeContext';
+import React, { useState } from 'react';
 
 interface NavbarProps {
   scrollY: number;
@@ -7,94 +6,117 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ scrollY }) => {
   const isScrolled = scrollY > 50;
-  const { theme, toggleTheme } = useTheme();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const navLinks = [
+    { label: 'Skills', href: '#skills' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Interests', href: '#interests' },
+  ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      isScrolled ? 'py-3' : 'py-5'
-    }`} style={{
-      backgroundColor: isScrolled ? 'var(--nav-bg)' : 'transparent',
-      backdropFilter: isScrolled ? 'blur(20px)' : 'none',
-      borderBottom: isScrolled ? '1px solid var(--border-light)' : '1px solid transparent',
-    }}>
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 flex justify-between items-center">
-        <a href="#hero" className="font-mono text-sm tracking-widest uppercase transition-colors hover:opacity-70" style={{ color: 'var(--accent)' }}>
-          Sahil Dhanvij
-        </a>
-
-        <div className="hidden md:flex items-center gap-10">
-          {[
-            { label: 'Skills', href: '#skills' },
-            { label: 'Projects', href: '#projects' },
-            { label: 'Interests', href: '#interests' },
-          ].map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="font-mono text-xs tracking-wider transition-colors duration-200"
-              style={{ color: 'var(--text-mid)' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-mid)')}
-            >
-              {item.label}
-            </a>
-          ))}
-
-          {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"
-            style={{ backgroundColor: 'var(--accent-subtle)', color: 'var(--accent)' }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-soft)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-subtle)'; }}
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? (
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-              </svg>
-            ) : (
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-              </svg>
-            )}
-          </button>
-
-          <a
-            href="mailto:sahildhanvij.cse@gmail.com"
-            className="font-mono text-xs tracking-wider px-4 py-2 rounded-full text-white transition-all duration-200"
-            style={{ backgroundColor: 'var(--accent)' }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-hover)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent)'; }}
-          >
-            Say hello
+    <>
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        style={{
+          padding: isScrolled ? '12px 0' : '20px 0',
+          backgroundColor: isScrolled ? 'var(--nav-bg)' : 'transparent',
+          backdropFilter: isScrolled ? 'blur(24px) saturate(1.2)' : 'none',
+          borderBottom: isScrolled ? '1px solid var(--border-light)' : '1px solid transparent',
+        }}
+      >
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 flex justify-between items-center">
+          <a href="#hero" className="font-display text-sm font-700 tracking-wider uppercase transition-colors duration-200" style={{ color: 'var(--accent)' }}>
+            Sahil Dhanvij
           </a>
-        </div>
 
-        <div className="md:hidden flex items-center gap-3">
-          <button
-            onClick={toggleTheme}
-            className="w-8 h-8 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: 'var(--accent-subtle)', color: 'var(--accent)' }}
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? (
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-10">
+            {navLinks.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="nav-link font-mono text-xs tracking-wider transition-colors duration-200"
+                style={{ color: 'var(--text-mid)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-mid)'; }}
+              >
+                {item.label}
+              </a>
+            ))}
+
+            <a
+              href="mailto:sahildhanvij.cse@gmail.com"
+              className="font-mono text-xs tracking-wider px-5 py-2.5 rounded-full text-white transition-all duration-300 hover-lift"
+              style={{ backgroundColor: 'var(--accent)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-hover)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent)'; }}
+            >
+              Say hello
+            </a>
+          </div>
+
+          {/* Mobile hamburger */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              style={{ color: 'var(--text)' }}
+              aria-label="Menu"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {mobileOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h12" />
+                )}
               </svg>
-            ) : (
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-              </svg>
-            )}
-          </button>
-          <button style={{ color: 'var(--text)' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16" />
-            </svg>
-          </button>
+            </button>
+          </div>
         </div>
+      </nav>
+
+      {/* Mobile menu */}
+      <div
+        className="fixed inset-0 z-40 md:hidden flex flex-col items-center justify-center gap-8 transition-all duration-500"
+        style={{
+          backgroundColor: 'var(--bg)',
+          opacity: mobileOpen ? 1 : 0,
+          pointerEvents: mobileOpen ? 'auto' : 'none',
+          transform: mobileOpen ? 'scale(1)' : 'scale(0.96)',
+        }}
+      >
+        {navLinks.map((item, idx) => (
+          <a
+            key={item.label}
+            href={item.href}
+            className="font-display text-3xl font-700 tracking-wide transition-all duration-300"
+            style={{
+              color: 'var(--text)',
+              opacity: mobileOpen ? 1 : 0,
+              transform: mobileOpen ? 'translateY(0)' : 'translateY(20px)',
+              transitionDelay: mobileOpen ? `${0.1 + idx * 0.07}s` : '0s',
+            }}
+            onClick={() => setMobileOpen(false)}
+            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text)'; }}
+          >
+            {item.label}
+          </a>
+        ))}
+        <a
+          href="mailto:sahildhanvij.cse@gmail.com"
+          className="font-mono text-sm tracking-wider px-6 py-3 rounded-full text-white mt-4"
+          style={{
+            backgroundColor: 'var(--accent)',
+            opacity: mobileOpen ? 1 : 0,
+            transform: mobileOpen ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s',
+          }}
+          onClick={() => setMobileOpen(false)}
+        >
+          Say hello
+        </a>
       </div>
-    </nav>
+    </>
   );
 };
